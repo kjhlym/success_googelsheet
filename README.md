@@ -1,67 +1,69 @@
-# 유튜브 영상 기반 티스토리 자동 포스팅 도구
+# Tistory YouTube Auto Posting
 
-이 프로젝트는 유튜브 영상 정보를 가져와 Gemini API를 통해 콘텐츠를 생성하고, 이를 티스토리 블로그에 자동으로 포스팅하는 Python 스크립트입니다.
+YouTube 영상 콘텐츠를 자동으로 티스토리 블로그에 포스팅하는 자동화 도구입니다.
+Google Sheets에서 YouTube 영상 정보를 가져와서 Gemini AI로 콘텐츠를 생성하고, Selenium을 사용하여 티스토리에 자동으로 포스팅합니다.
 
 ## 주요 기능
 
-- 유튜브 영상 검색 및 메타데이터 추출
+- Google Sheets에서 YouTube 영상 정보 읽기
+- YouTube API를 통한 영상 정보 수집
 - Gemini AI를 활용한 블로그 콘텐츠 자동 생성
-- 티스토리 블로그 자동 로그인 및 포스팅
-- 크롬 프로필을 통한 로그인 상태 유지
+- Selenium을 사용한 티스토리 자동 로그인 및 포스팅
+- 카테고리 자동 선택 및 발행
 
 ## 설치 방법
 
-1. 저장소 클론:
+1. 저장소 클론
 
-   ```
-   git clone https://github.com/yourusername/success_googelsheet.git
-   cd success_googelsheet
-   ```
+```bash
+git clone https://github.com/yourusername/tistory-youtube-auto-posting.git
+cd tistory-youtube-auto-posting
+```
 
-2. 필요한 패키지 설치:
+2. 가상환경 생성 및 활성화
 
-   ```
-   pip install -r requirements.txt
-   ```
+```bash
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
+```
 
-3. 환경 변수 설정 (.env 파일 생성):
-   ```
-   YOUTUBE_API_KEY=your_youtube_api_key
-   GEMINI_API_KEY=your_gemini_api_key
-   GEMINI_MODEL=gemini-2.0-pro-exp-02-05
-   TISTORY_ID=your_tistory_id
-   TISTORY_PASSWORD=your_tistory_password
-   ```
+3. 필요한 패키지 설치
+
+```bash
+pip install -r requirements.txt
+```
+
+4. `.env` 파일 설정
+
+```env
+KAKAO_ID=your_kakao_id
+KAKAO_PW=your_kakao_password
+YOUTUBE_API_KEY=your_youtube_api_key
+GEMINI_API_KEY=your_gemini_api_key
+GOOGLE_API_KEY=your_google_api_key
+GOOGLE_SHEET_ID=your_sheet_id
+```
 
 ## 사용 방법
 
-1. 스크립트 실행:
+1. Google Sheets 설정
 
-   ```
-   python tistory_auto_posting_selenium_sheet.py
-   ```
+   - 시트에 다음 열을 추가: select, URL, Title, Channel
+   - YouTube 영상 정보 입력
 
-2. 프롬프트에 따라 유튜브 검색어 또는 유튜브 영상 URL 입력
+2. 스크립트 실행
 
-3. 프로그램이 자동으로:
-   - 유튜브 데이터 추출
-   - AI로 콘텐츠 생성
-   - 티스토리에 포스팅
-
-## 파일 구조
-
-- `tistory_auto_posting_selenium_sheet.py`: 메인 스크립트
-- `requirements.txt`: 필요한 패키지 목록
-- `.env`: 환경 변수 설정 (생성 필요)
-- `json/`: JSON 데이터 저장 디렉토리
-- `ChromeProfile/`: 크롬 프로필 데이터 (자동 생성)
+```bash
+python tistory_auto_posting_selenium_sheet.py
+```
 
 ## 주의사항
 
-- 첫 실행 시 Chrome 브라우저 로그인 필요 (이후 ChromeProfile에 세션 저장)
-- .env 파일에 개인 인증 정보 보관 (GitHub에 업로드하지 않도록 주의)
-- API 키 할당량과 사용량 모니터링 필요
+- `.env` 파일에 민감한 정보를 저장하므로 절대 공개하지 마세요
+- ChromeProfile 폴더는 로그인 정보를 포함하므로 공유하지 마세요
+- API 키는 안전하게 보관하고 주기적으로 갱신하세요
 
 ## 라이선스
 
-이 프로젝트는 MIT 라이선스 하에 배포됩니다.
+MIT License

@@ -1,21 +1,37 @@
-[4528:55892:0411/132100.223:INFO:chrome_browser_cloud_management_controller.cc(202)] No machine level policy manager exists.
-[42884:27976:0411/132100.330:INFO:cpu_info.cc(53)] Available number of cores: 16
-[41652:55880:0411/132100.330:INFO:cpu_info.cc(53)] Available number of cores: 16
-[33652:51712:0411/132100.450:VERBOSE1:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
-[55004:48172:0411/132100.505:INFO:cpu_info.cc(53)] Available number of cores: 16
-[11532:43396:0411/132103.972:INFO:cpu_info.cc(53)] Available number of cores: 16
-[31992:50876:0411/132104.272:INFO:cpu_info.cc(53)] Available number of cores: 16
-[6340:11852:0411/132105.030:INFO:cpu_info.cc(53)] Available number of cores: 16
-[4528:55892:0411/132105.099:WARNING:content_autofill_driver.cc(217)] Skipped Autofill message for inactive frame
-[42624:17808:0411/132105.503:INFO:cpu_info.cc(53)] Available number of cores: 16
-[4528:41020:0411/132130.246:INFO:extension_garbage_collector.cc(183)] Garbage collection for extensions on file thread is complete.
-[4528:55892:0411/132216.708:INFO:CONSOLE(2)] "Sentry Logger [Log]: Integration installed: InboundFilters", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
-[4528:55892:0411/132216.708:INFO:CONSOLE(2)] "Sentry Logger [Log]: Integration installed: FunctionToString", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
-[4528:55892:0411/132216.709:INFO:CONSOLE(2)] "Sentry Logger [Log]: Integration installed: TryCatch", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
-[4528:55892:0411/132216.709:INFO:CONSOLE(2)] "Sentry Logger [Log]: Integration installed: Breadcrumbs", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
-[4528:55892:0411/132216.709:INFO:CONSOLE(2)] "Sentry Logger [Log]: Global Handler attached: onerror", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
-[4528:55892:0411/132216.709:INFO:CONSOLE(2)] "Sentry Logger [Log]: Global Handler attached: onunhandledrejection", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
-[4528:55892:0411/132216.709:INFO:CONSOLE(2)] "Sentry Logger [Log]: Integration installed: GlobalHandlers", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
-[4528:55892:0411/132216.709:INFO:CONSOLE(2)] "Sentry Logger [Log]: Integration installed: LinkedErrors", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
-[4528:55892:0411/132216.709:INFO:CONSOLE(2)] "Sentry Logger [Log]: Integration installed: UserAgent", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
-[53608:53324:0411/132216.797:INFO:cpu_info.cc(53)] Available number of cores: 16
+[42368:40600:0411/234326.184:INFO:chrome_browser_cloud_management_controller.cc(202)] No machine level policy manager exists.
+[43092:44140:0411/234326.302:INFO:cpu_info.cc(53)] Available number of cores: 16
+[31000:48356:0411/234326.303:INFO:cpu_info.cc(53)] Available number of cores: 16
+[42800:7716:0411/234326.420:VERBOSE1:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
+[40288:40080:0411/234326.472:INFO:cpu_info.cc(53)] Available number of cores: 16
+[39836:29352:0411/234329.617:INFO:cpu_info.cc(53)] Available number of cores: 16
+[29744:6004:0411/234329.905:INFO:cpu_info.cc(53)] Available number of cores: 16
+[42368:40600:0411/234330.162:ERROR:page_load_metrics_update_dispatcher.cc(179)] Invalid first_paint 0.274 s for first_image_paint 0.273 s
+[42368:40600:0411/234330.261:ERROR:page_load_metrics_update_dispatcher.cc(179)] Invalid first_paint 0.274 s for first_image_paint 0.273 s
+[42368:40600:0411/234330.367:ERROR:page_load_metrics_update_dispatcher.cc(179)] Invalid first_paint 0.274 s for first_image_paint 0.273 s
+[42368:40600:0411/234330.486:ERROR:page_load_metrics_update_dispatcher.cc(179)] Invalid first_paint 0.274 s for first_image_paint 0.273 s
+[42368:40600:0411/234330.716:ERROR:page_load_metrics_update_dispatcher.cc(179)] Invalid first_paint 0.274 s for first_image_paint 0.273 s
+[42368:40600:0411/234330.723:ERROR:page_load_metrics_update_dispatcher.cc(179)] Invalid first_paint 0.274 s for first_image_paint 0.273 s
+[2012:31712:0411/234330.750:INFO:cpu_info.cc(53)] Available number of cores: 16
+[42368:40600:0411/234330.821:WARNING:content_autofill_driver.cc(217)] Skipped Autofill message for inactive frame
+[42104:37244:0411/234331.188:INFO:cpu_info.cc(53)] Available number of cores: 16
+[42368:5332:0411/234356.208:INFO:extension_garbage_collector.cc(183)] Garbage collection for extensions on file thread is complete.
+[42368:40600:0411/234357.861:INFO:CONSOLE(2)] "Sentry Logger [Log]: Integration installed: InboundFilters", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
+[42368:40600:0411/234357.861:INFO:CONSOLE(2)] "Sentry Logger [Log]: Integration installed: FunctionToString", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
+[42368:40600:0411/234357.861:INFO:CONSOLE(2)] "Sentry Logger [Log]: Integration installed: TryCatch", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
+[42368:40600:0411/234357.861:INFO:CONSOLE(2)] "Sentry Logger [Log]: Integration installed: Breadcrumbs", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
+[42368:40600:0411/234357.862:INFO:CONSOLE(2)] "Sentry Logger [Log]: Global Handler attached: onerror", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
+[42368:40600:0411/234357.862:INFO:CONSOLE(2)] "Sentry Logger [Log]: Global Handler attached: onunhandledrejection", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
+[42368:40600:0411/234357.862:INFO:CONSOLE(2)] "Sentry Logger [Log]: Integration installed: GlobalHandlers", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
+[42368:40600:0411/234357.862:INFO:CONSOLE(2)] "Sentry Logger [Log]: Integration installed: LinkedErrors", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
+[42368:40600:0411/234357.862:INFO:CONSOLE(2)] "Sentry Logger [Log]: Integration installed: UserAgent", source: https://t1.daumcdn.net/keditor/dist/0.8.12/plugins/sentry/plugin.min.js (2)
+[36516:43916:0411/234357.956:INFO:cpu_info.cc(53)] Available number of cores: 16
+[46560:38772:0411/234514.301:INFO:cpu_info.cc(53)] Available number of cores: 16
+[42368:40600:0411/234515.451:INFO:CONSOLE(172)] "Deprecated as of 10.6.0. initHighlightingOnLoad() is deprecated.  Use highlightAll() instead.", source: https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js (172)
+[47312:29832:0411/234515.462:INFO:cpu_info.cc(53)] Available number of cores: 16
+[28840:40308:0411/234515.740:INFO:cpu_info.cc(53)] Available number of cores: 16
+[41596:44408:0411/234516.708:INFO:cpu_info.cc(53)] Available number of cores: 16
+[44640:48236:0411/234516.711:INFO:cpu_info.cc(53)] Available number of cores: 16
+[42800:7716:0411/234517.120:ERROR:gles2_cmd_decoder_passthrough.cc(1081)] [GroupMarkerNotSet(crbug.com/242999)!:A0F02300446F0000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[42368:40600:0411/234517.126:INFO:CONSOLE(0)] "[GroupMarkerNotSet(crbug.com/242999)!:A0F02300446F0000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.", source: https://ep2.adtrafficquality.google/sodar/sodar2/232/runner.html (0)
+[27804:40712:0411/234635.936:WARNING:sqlite_persistent_store_backend_base.cc(176)] Failed to post task from FlushAndNotifyInBackground@net\extras\sqlite\sqlite_persistent_store_backend_base.cc:226 to client_task_runner_.
+[27804:40712:0411/234635.936:WARNING:sqlite_persistent_store_backend_base.cc(176)] Failed to post task from FlushAndNotifyInBackground@net\extras\sqlite\sqlite_persistent_store_backend_base.cc:226 to client_task_runner_.

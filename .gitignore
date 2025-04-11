@@ -1,0 +1,19 @@
+# Ignore environment variables and API keys
+.env
+
+# Ignore Chrome profile data
+ChromeProfile/
+
+# Ignore binary files
+chromedriver.exe
+
+# Ignore python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore logs
+*.log
+
+# Ignore personal data
+*.pma

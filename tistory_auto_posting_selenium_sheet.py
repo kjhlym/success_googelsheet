@@ -251,170 +251,211 @@ def generate_content_with_gemini(video_data):
                 {html_content}
             </div>
         </div>
-        
-        <div style="margin-top:30px; padding:15px; background-color:#f8f9fa; border-radius:5px; font-size:0.9em; color:#546e7a;">
-            <p>이 글은 YouTube 영상 <a href="https://www.youtube.com/watch?v={video_data['video_id']}" target="_blank">{video_data['title']}</a>를 기반으로 작성되었습니다.</p>
-            <p>채널: {video_data['channel_title']}</p>
-        </div>
         '''
-
-        # HTML을 파일로 저장
-        output_file = f"json/gemini_content_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
-        with open(output_file, 'w', encoding='utf-8') as f:
-            f.write(styled_html)
         
-        return output_file, styled_html
+        return styled_html
         
     except Exception as e:
-        print(f"콘텐츠 생성 중 오류 발생: {str(e)}")
-        return None, None
+        print(f"Gemini API 호출 중 오류 발생: {str(e)}")
+        return None
 
 def create_html_content(json_file):
     try:
-        # JSON 파일 로드
+        # JSON 파일 읽기
         with open(json_file, 'r', encoding='utf-8') as f:
-            video_data = json.load(f)
+            data = json.load(f)
         
-        # Gemini로 콘텐츠 생성
-        print(f"Gemini로 '{video_data['title']}' 콘텐츠 생성 시작...")
-        html_file, html_content = generate_content_with_gemini(video_data)
-        
-        if html_file:
-            print(f"콘텐츠 생성 완료: {html_file}")
-            return html_file, html_content, video_data
-        else:
-            print("콘텐츠 생성 실패")
-            return None, None, None
+        # Gemini로 콘텐츠 생성 (이미 HTML로 변환됨)
+        ai_generated_content = generate_content_with_gemini(data)
+        if not ai_generated_content:
+            return None
             
+        # 데이터 포맷팅
+        upload_date = datetime.strptime(data['upload_date'], '%Y-%m-%dT%H:%M:%SZ').strftime('%Y-%m-%d')
+        # 태그 HTML 생성: 각 태그를 스타일이 적용된 span 태그로 변환
+        tags_html = ''.join([f'<span style="display:inline-block; background-color:#e8f0fe; color:#1a73e8; padding:5px 10px; border-radius:15px; margin:5px; font-size:0.9em;">{tag}</span>' for tag in data['tags']]) if data['tags'] else '없음'
+        
+        # HTML 직접 생성 - 폭을 넓게 조정
+        html_content = f"""
+        <div style="font-family:'Pretendard',sans-serif; line-height:1.8; color:#2d3748; width:100%; margin:0 auto; padding:20px;">
+            <div style="background-color:#ffffff; border-radius:16px; padding:30px; box-shadow:0 4px 20px rgba(0,0,0,0.05); border:1px solid #f0f2f5;">
+                <h1 style="color:#2563eb; font-size:2.5em; font-weight:700; margin-bottom:35px; padding-bottom:20px; border-bottom:3px solid #e2e8f0; letter-spacing:-0.03em; width:100%;">{data['title']}</h1>
+
+                <div style="background:linear-gradient(135deg, #f8faff 0%, #f0f7ff 100%); padding:25px; border-radius:12px; margin-bottom:40px; box-shadow:0 2px 12px rgba(37,99,235,0.08); width:100%;">
+                    {ai_generated_content}
+                </div>
+
+            </div>
+        </div>
+        """
+        
+        return html_content
+    
     except Exception as e:
-        print(f"HTML 콘텐츠 생성 중 오류: {str(e)}")
-        return None, None, None
+        print(f"HTML 생성 중 오류 발생: {str(e)}")
+        return None
 
 def tistory_write(_driver, json_file):
     try:
-        # HTML 콘텐츠 생성
-        html_file, html_content, video_data = create_html_content(json_file)
-        
-        if not html_content or not video_data:
-            print("콘텐츠를 생성할 수 없어 티스토리 작성을 중단합니다.")
-            return False
+        html_content = create_html_content(json_file)
+        if not html_content:
+            raise Exception("HTML 컨텐츠 생성 실패")
             
         # 티스토리 글쓰기 페이지로 이동
-        _driver.get(f"{tistory_blog_name}/manage/post")
-        _driver.implicitly_wait(LOADING_WAIT_TIME)
+        _driver.get(f"{tistory_blog_name}/manage/newpost/?type=post")
+        sleep(LOADING_WAIT_TIME)
         
-        # iframe으로 전환
-        WebDriverWait(_driver, 10).until(
-            EC.frame_to_be_available_and_switch_to_it((By.ID, 'editor-frame'))
-        )
+        # HTML 모드로 전환 (새로운 에디터)
+        try:
+            # 먼저 기존 방식 시도
+            html_button = WebDriverWait(_driver, 5).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "a.btn_html"))
+            )
+            html_button.click()
+        except:
+            try:
+                # 새로운 에디터 방식 시도
+                html_button = WebDriverWait(_driver, 5).until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, "#editor-mode-layer-btn-open"))
+                )
+                html_button.click()
+                sleep(1)
+                html_mode = _driver.find_element(By.CSS_SELECTOR, "#editor-mode-html")
+                html_mode.click()
+                sleep(1)
+                alert = _driver.switch_to.alert
+                alert.accept()
+            except:
+                print("HTML 모드 전환 버튼을 찾을 수 없습니다.")
+                
+        sleep(PAUSE_TIME)
         
-        # 제목 입력
-        title_input = WebDriverWait(_driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, ".textarea-title"))
-        )
-        title_input.send_keys(f"{video_data['title']} - {video_data['channel_title']}")
+        # HTML 내용 붙여넣기 (새로운 에디터)
+        try:
+            # 먼저 기존 방식 시도
+            html_area = _driver.find_element(By.CSS_SELECTOR, "textarea.html")
+            html_area.clear()
+            pyperclip.copy(html_content)
+            html_area.send_keys(Keys.CONTROL, 'v')
+        except:
+            try:
+                # 새로운 에디터 방식 시도
+                editor = _driver.find_element(By.CSS_SELECTOR, ".CodeMirror-lines")
+                editor.click()
+                ActionChains(_driver).key_down(Keys.CONTROL).send_keys('a').key_up(Keys.CONTROL).perform()
+                sleep(1)
+                ActionChains(_driver).key_down(Keys.DELETE).key_up(Keys.DELETE).perform()
+                sleep(1)
+                pyperclip.copy(html_content)
+                ActionChains(_driver).key_down(Keys.CONTROL).send_keys('v').key_up(Keys.CONTROL).perform()
+            except:
+                print("에디터를 찾을 수 없습니다.")
         
-        # HTML 모드로 전환
-        html_button = WebDriverWait(_driver, 10).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, "button.btn-html"))
-        )
-        html_button.click()
+        sleep(PAUSE_TIME)
         
-        # HTML 에디터 영역
-        html_editor = WebDriverWait(_driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, ".CodeMirror-code"))
-        )
-        html_editor.click()
+        # 제목 입력 (새로운 에디터)
+        with open(json_file, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        try:
+            # 먼저 기존 방식 시도
+            title_input = _driver.find_element(By.CSS_SELECTOR, "#title")
+            title_input.send_keys(data['title'])
+        except:
+            try:
+                # 새로운 에디터 방식 시도
+                title_input = _driver.find_element(By.CSS_SELECTOR, "#post-title-inp")
+                title_input.click()
+                pyperclip.copy(data['title'])
+                ActionChains(_driver).key_down(Keys.CONTROL).send_keys('v').key_up(Keys.CONTROL).perform()
+            except:
+                print("제목 입력란을 찾을 수 없습니다.")
         
-        # 클립보드에 HTML 복사 후 붙여넣기
-        pyperclip.copy(html_content)
+        sleep(PAUSE_TIME)
         
-        # Ctrl+V 또는 Command+V로 붙여넣기
-        if osName == "Windows":
-            ActionChains(_driver).key_down(Keys.CONTROL).send_keys('v').key_up(Keys.CONTROL).perform()
-        else:  # Mac
-            ActionChains(_driver).key_down(Keys.COMMAND).send_keys('v').key_up(Keys.COMMAND).perform()
+        # 카테고리 선택 (새로운 에디터)
+        try:
+            # 먼저 기존 방식 시도
+            category_select = _driver.find_element(By.CSS_SELECTOR, "#category")
+            for option in category_select.find_elements(By.TAG_NAME, "option"):
+                if option.text == tistory_category_name:
+                    option.click()
+                    break
+        except:
+            try:
+                # 새로운 에디터 방식 시도
+                category_button = _driver.find_element(By.CSS_SELECTOR, "#category-btn")
+                category_button.click()
+                sleep(1)
+                category_item = _driver.find_element(By.XPATH, f"//span[text()='{tistory_category_name}']")
+                category_item.click()
+            except:
+                print("카테고리 선택 버튼을 찾을 수 없습니다.")
         
-        sleep(2)  # 붙여넣기 완료 대기
+        sleep(PAUSE_TIME)
         
-        # 카테고리 선택
-        _driver.switch_to.default_content()  # iframe에서 빠져나옴
+        # 발행 버튼 클릭 (새로운 에디터)
+        try:
+            # 먼저 기존 방식 시도
+            publish_button = _driver.find_element(By.CSS_SELECTOR, ".btn_publish")
+            publish_button.click()
+        except:
+            try:
+                # 새로운 에디터 방식 시도
+                publish_button = _driver.find_element(By.CSS_SELECTOR, ".btn-publish")
+                publish_button.click()
+            except:
+                print("발행 버튼을 찾을 수 없습니다.")
+                # 임시저장으로 대체
+                try:
+                    draft_button = _driver.find_element(By.CSS_SELECTOR, ".btn-draft")
+                    draft_button.click()
+                    print("임시저장 되었습니다. 수동으로 발행해주세요.")
+                except:
+                    print("임시저장 버튼도 찾을 수 없습니다.")
         
-        # 오른쪽 사이드바 열기
-        side_button = WebDriverWait(_driver, 10).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, ".wrap_openbtn"))
-        )
-        side_button.click()
+        # 발행 완료 대기
+        try:
+            WebDriverWait(_driver, 30).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, ".layer_complete"))
+            )
+            print("포스팅 완료!")
+        except:
+            print("포스팅은 완료되었지만, 완료 메시지를 확인할 수 없습니다.")
         
-        # 카테고리 드롭다운
-        category_button = WebDriverWait(_driver, 10).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, ".category-btn"))
-        )
-        category_button.click()
-        
-        # 카테고리 목록에서 'IT' 선택
-        categories = WebDriverWait(_driver, 10).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".list-item"))
-        )
-        
-        for category in categories:
-            if category.text.strip() == tistory_category_name:
-                category.click()
-                break
-        
-        # 발행 버튼 클릭
-        publish_button = WebDriverWait(_driver, 10).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, ".btn-publish"))
-        )
-        publish_button.click()
-        
-        # 발행 확인 버튼
-        confirm_button = WebDriverWait(_driver, 10).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, ".btn-blue"))
-        )
-        confirm_button.click()
-        
-        # 발행 완료 확인
-        WebDriverWait(_driver, 20).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, ".wrap_notice"))
-        )
-        
-        print(f"{C_GREEN}티스토리 포스팅 완료: {video_data['title']}{C_END}")
         return True
         
     except Exception as e:
-        print(f"{C_RED}티스토리 글쓰기 중 오류 발생: {str(e)}{C_END}")
+        print(f"포스팅 중 오류 발생: {str(e)}")
         return False
-        
+
 def main():
-    driver = init_driver()
-    if not driver:
-        print("브라우저를 초기화할 수 없습니다.")
-        return
-    
     try:
-        # 티스토리 로그인
+        print("\nSTART...")
+        
+        # YouTube 검색어
+        search_query = input("YouTube 검색어를 입력하세요: ")
+        
+        # YouTube 검색 및 JSON 저장
+        json_file = search_youtube(search_query)
+        if not json_file:
+            print("YouTube 검색 결과를 가져오는데 실패했습니다.")
+            return
+        
+        # chrome driver init
+        driver = init_driver()
+        if not driver:
+            print("Chrome 드라이버 초기화 실패")
+            return
+        
+        # tistory login
         tistory_login(driver)
         
-        # 유튜브 검색어 입력 받기
-        query = input(f"\n{C_YELLOW}YouTube 검색어를 입력하세요: {C_END}")
+        # tistory write
+        tistory_write(driver, json_file)
         
-        # 유튜브 영상 검색
-        json_file = search_youtube(query)
-        
-        if json_file:
-            print(f"검색 결과 저장됨: {json_file}")
-            
-            # 티스토리에 글쓰기
-            tistory_write(driver, json_file)
-            
-        else:
-            print("검색 결과를 찾을 수 없습니다.")
-    
     finally:
-        # 브라우저 종료
-        input(f"\n{C_YELLOW}종료하려면 아무 키나 누르세요...{C_END}")
-        driver.quit()
+        print("\nEND!!!")
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     main()
